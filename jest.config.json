@@ -1,0 +1,7 @@
+{
+  "verbose": true,
+  "testRegex": "(.*[.](test|spec))\\.(ts|tsx)$",
+  "roots": [
+    "<rootDir>/test"
+  ]
+}
