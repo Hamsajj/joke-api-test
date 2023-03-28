@@ -1,14 +1,11 @@
 import express from 'express';
 import morgan from 'morgan';
+import { router as jokesRouter } from './jokes/jokes.service';
 
 export function initApp(): express.Application {
   const app = express();
   app.use(morgan('tiny'));
-
-  app.get('/', function (req, res) {
-    res.send('hello, world!');
-  });
-
+  app.use('/jokes', jokesRouter());
   return app;
 }
 

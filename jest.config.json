@@ -3,5 +3,6 @@
   "testRegex": "(.*[.](test|spec))\\.(ts|tsx)$",
   "roots": [
     "<rootDir>/test"
-  ]
+  ],
+  "setupFiles": ["./test/jestSetup.ts"]
 }
