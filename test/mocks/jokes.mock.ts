@@ -1,5 +1,3 @@
-import { Joke } from '../../src/jokes/jokes.model';
-
 export const singleJokeMock = {
   id: 1,
   joke: 'a joke',
