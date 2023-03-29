@@ -1,8 +1,11 @@
 import { initApp } from '../src/app';
 import request from 'supertest';
 import { HttpStatusCode } from 'axios';
+import { JokeFactory } from '../src/jokes';
+import { Joke } from '../src/jokes/jokes.model';
+import supertest from 'supertest';
 
-const app = initApp();
+const app = initApp([JokeFactory()]);
 describe('Integration test', () => {
   describe('jokes', () => {
     const baseURL = '/jokes';
@@ -10,78 +13,97 @@ describe('Integration test', () => {
       describe('successful', () => {
         it('get jokes with default parameters', async () => {
           const result = await request(app).get(`${baseURL}/list`);
-          expect(result.statusCode).toEqual(HttpStatusCode.Ok);
-          expect(result.body).toHaveLength(10);
-          for (const bodyElement of result.body) {
-            expect(bodyElement).toEqual(
-              expect.objectContaining({
-                category: expect.any(String),
-                type: expect.any(String),
-              }),
-            );
-            if (bodyElement.type === 'single') {
-              expect(bodyElement).toEqual(
-                expect.objectContaining({
-                  joke: expect.any(String),
-                }),
-              );
-            } else if (bodyElement.type === 'twopart') {
-              expect.objectContaining({
-                setup: expect.any(String),
-                delivery: expect.any(String),
-              });
-            }
-          }
+          expectListReturnsArrayOfJokes(result, 10);
+          result.body.jokes.forEach(expectJokeProperties);
         });
         it('get jokes with type single and amount 8', async () => {
           const amount = 8;
           const result = await request(app).get(
             `${baseURL}/list?amount=${amount}&type=single`,
           );
-          expect(result.statusCode).toEqual(HttpStatusCode.Ok);
-          expect(result.body).toHaveLength(amount);
-          for (const bodyElement of result.body) {
-            expect(bodyElement).toEqual(
-              expect.objectContaining({
-                category: expect.any(String),
-                type: 'single',
-                joke: expect.any(String),
-              }),
-            );
-          }
+          expectListReturnsArrayOfJokes(result, amount);
+          result.body.jokes.forEach((joke: Joke) => {
+            expect(joke.type).toEqual('single');
+            expectJokeProperties(joke);
+          });
         });
       });
       describe('errors', () => {
-        it('amount can not be less than 5', async () => {
-          const amount = 4;
-          const result = await request(app).get(
-            `${baseURL}/list?amount=${amount}&type=single`,
-          );
-          expect(result.statusCode).toEqual(HttpStatusCode.BadRequest);
-          expect(result.body).toEqual({
-            errors: ['amount must not be less than 5'],
-          });
-        });
-        it('amount can not be greater than 10', async () => {
-          const amount = 11;
-          const result = await request(app).get(
-            `${baseURL}/list?amount=${amount}&type=single`,
-          );
-          expect(result.statusCode).toEqual(HttpStatusCode.BadRequest);
-          expect(result.body).toEqual({
-            errors: ['amount must not be greater than 10'],
-          });
-        });
-        it('type should be either single, twopart or any', async () => {
-          const result = await request(app).get(`${baseURL}/list?type=random`);
-          expect(result.statusCode).toEqual(HttpStatusCode.BadRequest);
-          expect(result.body).toEqual({
-            errors: [
+        const testCases: {
+          name: string;
+          amount: number;
+          type: string;
+          expectedCode: number;
+          expectedErrors: string[];
+        }[] = [
+          {
+            name: 'amount can not be less than 5',
+            amount: 4,
+            type: 'single',
+            expectedCode: 400,
+            expectedErrors: ['amount must not be less than 5'],
+          },
+          {
+            name: 'amount can not be greater than 10',
+            amount: 11,
+            type: 'single',
+            expectedCode: 400,
+            expectedErrors: ['amount must not be greater than 10'],
+          },
+          {
+            name: 'type should be either single, twopart or any',
+            amount: 10,
+            type: 'invalid',
+            expectedCode: 400,
+            expectedErrors: [
               'type must be one of the following values: single, twopart, any',
             ],
+          },
+        ];
+
+        testCases.forEach((tt) => {
+          it(tt.name, async () => {
+            const result = await request(app).get(
+              `${baseURL}/list?amount=${tt.amount}&type=${tt.type}`,
+            );
+            expect(result.statusCode).toEqual(tt.expectedCode);
+            expect(result.body).toEqual({
+              errors: tt.expectedErrors,
+            });
           });
         });
       });
     });
   });
 });
+
+function expectListReturnsArrayOfJokes(
+  result: supertest.Response,
+  length: number,
+) {
+  expect(result.statusCode).toEqual(HttpStatusCode.Ok);
+  expect(result.body.jokes).toBeTruthy();
+  expect(Array.isArray(result.body.jokes)).toBe(true);
+  expect(result.body.jokes).toHaveLength(length);
+}
+
+function expectJokeProperties(joke: Joke) {
+  expect(joke).toEqual(
+    expect.objectContaining({
+      category: expect.any(String),
+      type: expect.any(String),
+    }),
+  );
+  if (joke.type === 'single') {
+    expect(joke).toEqual(
+      expect.objectContaining({
+        joke: expect.any(String),
+      }),
+    );
+  } else if (joke.type === 'twopart') {
+    expect.objectContaining({
+      setup: expect.any(String),
+      delivery: expect.any(String),
+    });
+  }
+}

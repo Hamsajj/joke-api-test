@@ -30,7 +30,7 @@ describe('fetchJokes', () => {
         input: { type: 'single', amount: 2 },
       },
     ];
-    for (const tt of testCases) {
+    testCases.forEach((tt) => {
       it(tt.name, async () => {
         await expect(fetchJokes(tt.input)).resolves.toMatchObject([
           singleJokeMock,
@@ -41,7 +41,7 @@ describe('fetchJokes', () => {
           { params: tt.expectedCallArguments },
         ]);
       });
-    }
+    });
   });
   describe('error', () => {
     it('should throw same error', async () => {
