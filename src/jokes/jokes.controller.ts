@@ -17,9 +17,10 @@ export class JokesController implements IController {
       params?.amount || defaultCount,
       params.type || 'any',
     );
+    const analyzes = await this.service.analyzeJokes(jokes);
     const listJokeDto = plainToInstance(
       ListJokeResponseParamsDto,
-      { jokes },
+      { jokes, analyzes },
       // to make sure we are not exposing undesired fields
       { excludeExtraneousValues: true },
     );

@@ -2,7 +2,7 @@ import { initApp } from '../src/app';
 import request from 'supertest';
 import { HttpStatusCode } from 'axios';
 import { JokeFactory } from '../src/jokes';
-import { Joke } from '../src/jokes/jokes.model';
+import { AnalyzeResult, Joke } from '../src/jokes/jokes.model';
 import supertest from 'supertest';
 
 const app = initApp([JokeFactory()]);
@@ -15,6 +15,7 @@ describe('Integration test', () => {
           const result = await request(app).get(`${baseURL}/list`);
           expectListReturnsArrayOfJokes(result, 10);
           result.body.jokes.forEach(expectJokeProperties);
+          result.body.analyzes.forEach(expectAnalyzeProperties);
         });
         it('get jokes with type single and amount 8', async () => {
           const amount = 8;
@@ -106,4 +107,13 @@ function expectJokeProperties(joke: Joke) {
       delivery: expect.any(String),
     });
   }
+}
+
+function expectAnalyzeProperties(analyze: AnalyzeResult) {
+  expect(analyze).toEqual(
+    expect.objectContaining({
+      description: expect.any(String),
+      value: expect.any(String),
+    }),
+  );
 }

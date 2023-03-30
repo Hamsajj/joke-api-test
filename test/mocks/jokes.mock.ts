@@ -1,6 +1,6 @@
 export const singleJokeMock = {
   id: 1,
-  joke: 'a jokea',
+  joke: 'a  jokea',
   lang: 'en',
   category: 'Pun',
   type: 'single',

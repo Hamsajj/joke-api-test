@@ -1,6 +1,6 @@
 import { IsIn, IsOptional, Max, Min } from 'class-validator';
 import { Expose, Type } from 'class-transformer';
-import { Joke } from './jokes.model';
+import { AnalyzeResult, Joke } from './jokes.model';
 
 export class GetJokeParamsDto {
   @IsOptional()
@@ -26,4 +26,8 @@ export class ListJokeResponseParamsDto {
   @Type(() => Joke)
   @Expose()
   jokes!: Joke[];
+
+  @Type(() => AnalyzeResult)
+  @Expose()
+  analyzes!: AnalyzeResult[];
 }

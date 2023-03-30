@@ -20,7 +20,7 @@ describe('joke service', () => {
         {
           name: 'single joke',
           input: [Object.assign(new Joke(), singleJokeMock)],
-          expectedTotalChar: '7',
+          expectedTotalChar: '8',
           expectedLetterCount: `'o' repeated 1 times`,
           expectedCommonLetter: `'a' with 2 occurrence`,
           expectedDominantCategory: 'category Pun with 100% of jokes',
@@ -39,17 +39,28 @@ describe('joke service', () => {
             Object.assign(new Joke(), twoPartJokeMock),
             Object.assign(new Joke(), singleJokeMock),
           ],
-          expectedTotalChar: '14',
+          expectedTotalChar: '15',
           expectedLetterCount: `'o' repeated 2 times`,
           expectedCommonLetter: `'a' with 4 occurrence`,
           expectedDominantCategory:
             'draw between categories Programming, Pun with 50% of jokes',
         },
+        {
+          name: 'two of same category',
+          input: [
+            Object.assign(new Joke(), singleJokeMock),
+            Object.assign(new Joke(), singleJokeMock),
+          ],
+          expectedTotalChar: '16',
+          expectedLetterCount: `'o' repeated 2 times`,
+          expectedCommonLetter: `'a' with 4 occurrence`,
+          expectedDominantCategory: 'category Pun with 100% of jokes',
+        },
       ];
 
       testCases.forEach((tt) => {
-        it(tt.name, () => {
-          const result: AnalyzeResult[] = service.analyzeJokes(tt.input);
+        it(tt.name, async () => {
+          const result: AnalyzeResult[] = await service.analyzeJokes(tt.input);
           expect(result).toBeTruthy();
           expect(Array.isArray(result)).toBe(true);
           expect(result.length).toEqual(4);

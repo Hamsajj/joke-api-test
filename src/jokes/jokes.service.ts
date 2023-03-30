@@ -4,7 +4,7 @@ import { fetchJokes, JokeApiParam } from '../utils';
 export interface IJokeService {
   getJokes(amount: number, type: 'single' | 'twopart' | 'any'): Promise<Joke[]>;
 
-  analyzeJokes(jokes: Joke[]): AnalyzeResult[];
+  analyzeJokes(jokes: Joke[]): Promise<AnalyzeResult[]>;
 }
 
 export class JokeService implements IJokeService {
@@ -20,7 +20,7 @@ export class JokeService implements IJokeService {
     return fetchJokes(apiParams);
   }
 
-  analyzeJokes(jokes: Joke[]): AnalyzeResult[] {
+  async analyzeJokes(jokes: Joke[]): Promise<AnalyzeResult[]> {
     /* there is tradeoff between readability and performance here
       we can have one big for loop over jokes and calculate multiple metrics in the same loop
       but we also can treat each metric separately and thus looping over jokes multiple times
@@ -31,16 +31,19 @@ export class JokeService implements IJokeService {
       .map(this.getJokeText)
       .join('')
       .toLowerCase();
+    const fullJokeLengthWithoutWhiteSpace = fullJokeLength.replace(/\s/g, '');
     // removes whitespaces to get third letter
     const letterToLookFor =
-      this.getJokeText(jokes[jokes.length - 1])?.replace(/ /g, '')[2] || '';
-
-    return [
+      this.getJokeText(jokes[jokes.length - 1])?.replace(/\s/g, '')[2] || '';
+    return Promise.all([
       this.analyzeTotalNumberOfChars(fullJokeLength),
-      this.analyzeLetterOccurrence(fullJokeLength, letterToLookFor),
-      this.analyzeMostCommonLetter(fullJokeLength),
+      this.analyzeLetterOccurrence(
+        fullJokeLengthWithoutWhiteSpace,
+        letterToLookFor,
+      ),
+      this.analyzeMostCommonLetter(fullJokeLengthWithoutWhiteSpace),
       this.analyzeCategories(jokes),
-    ];
+    ]);
   }
 
   private analyzeTotalNumberOfChars(fullJokeText: string): AnalyzeResult {
@@ -125,19 +128,21 @@ export class JokeService implements IJokeService {
       }
     });
     const maxRepetition = categoryCountMap[maxCategory];
-    const commonCategories: string[] = [];
+    const commonCategories: Set<string> = new Set();
     for (const category of categories) {
       if (categoryCountMap[category] === maxRepetition) {
-        commonCategories.push(category);
+        commonCategories.add(category);
       }
     }
     const mostCommonPercentage = (maxRepetition / categories.length) * 100;
-    const analyzeResult = `${
-      commonCategories.length > 1 ? 'draw between categories' : 'category'
-    } ${commonCategories.join(', ')} with ${mostCommonPercentage}% of jokes`;
+    const analyzeResultValue = `${
+      commonCategories.size > 1 ? 'draw between categories' : 'category'
+    } ${Array.from(commonCategories).join(
+      ', ',
+    )} with ${mostCommonPercentage}% of jokes`;
     return new AnalyzeResult(
       'Dominant category',
-      analyzeResult,
+      analyzeResultValue,
       ANALYZE_TYPE.DOMINANT_CATEGORY,
     );
   }
