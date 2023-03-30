@@ -4,6 +4,7 @@ import { validate, ValidationError } from 'class-validator';
 import { sanitize } from 'class-sanitizer';
 
 export function dtoValidationMiddleware(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   type: any,
   requestField: 'body' | 'query',
   skipMissingProperties = false,

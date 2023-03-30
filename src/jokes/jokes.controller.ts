@@ -5,6 +5,7 @@ import { HttpStatusCode } from 'axios';
 import { plainToInstance } from 'class-transformer';
 import { dtoValidationMiddleware } from './middlewares';
 import { IController } from '../interfaces';
+import { errWrapper } from '../error';
 
 const defaultCount = 10;
 
@@ -33,7 +34,7 @@ export class JokesController implements IController {
       .get(
         '/list',
         dtoValidationMiddleware(GetJokeParamsDto, 'query'),
-        this.getJokes.bind(this),
+        errWrapper(this.getJokes.bind(this)),
       );
     app.use('/jokes', router);
   }

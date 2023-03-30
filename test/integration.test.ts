@@ -1,9 +1,11 @@
 import { initApp } from '../src/app';
 import request from 'supertest';
+import supertest from 'supertest';
 import { HttpStatusCode } from 'axios';
 import { JokeFactory } from '../src/jokes';
 import { AnalyzeResult, Joke } from '../src/jokes/jokes.model';
-import supertest from 'supertest';
+import { JokesController } from '../src/jokes/jokes.controller';
+import { IJokeService } from '../src/jokes/jokes.service';
 
 const app = initApp([JokeFactory()]);
 describe('Integration test', () => {
@@ -74,6 +76,26 @@ describe('Integration test', () => {
           });
         });
       });
+    });
+  });
+  describe('internal error handling', () => {
+    const mockService: IJokeService = {
+      getJokes: jest.fn((): Promise<Joke[]> => {
+        throw new Error('mock error');
+      }),
+      analyzeJokes: jest.fn(),
+    };
+    const jokeController = new JokesController(mockService);
+    const appWithFailure = initApp([jokeController]);
+    it('should return status 500', async () => {
+      const baseURL = '/jokes';
+      try {
+        const result = await request(appWithFailure).get(`${baseURL}/list`);
+        expect(result.statusCode).toEqual(500);
+        expect(result.body).toMatchObject({ error: 'internal server error' });
+      } catch (e) {
+        console.log(e);
+      }
     });
   });
 });

@@ -3,6 +3,7 @@ import express from 'express';
 import morgan from 'morgan';
 import { IController } from './interfaces';
 import { JokeFactory } from './jokes';
+import { errorMiddleware } from './error';
 
 /**
  * This function is just for demonstration
@@ -11,10 +12,14 @@ import { JokeFactory } from './jokes';
  */
 export function initApp(controllers: IController[]): express.Application {
   const app = express();
-  app.use(morgan('tiny'));
+  app.use(morgan('dev', { skip: () => process.env.NODE_ENV === 'test' }));
   for (const controller of controllers) {
     controller.setRouter(app);
   }
+  app.get('*', function (req, res) {
+    res.status(404).json({ error: 'route not found' });
+  });
+  app.use(errorMiddleware);
   return app;
 }
 
