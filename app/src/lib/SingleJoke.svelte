@@ -1,9 +1,7 @@
 <script lang="ts">
-  import { Text } from "@svelteuidev/core";
   import type { Joke } from "../models/joke.js";
+  import JokeText from "./JokeText.svelte";
   export let joke: Joke;
 </script>
 
-<Text size="sm">
-  {joke.joke}
-</Text>
+<JokeText text={joke.joke}/>

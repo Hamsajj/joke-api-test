@@ -18,6 +18,8 @@ body {
   margin: 0;
   display: flex;
   place-items: center;
+  justify-content: center;
+  align-items: center;
   min-width: 320px;
   min-height: 100vh;
 }
@@ -27,8 +29,22 @@ body {
 
 #app {
   max-width: 1280px;
+  width: 80%;
+  justify-items: stretch;
+  align-items: stretch;
+  text-align: center;
   margin: 0 auto;
   padding: 2rem;
-  text-align: center;
+  display: flex;
 }
 
+#SVELTEUI_PROVIDER {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+
+span.attention {
+  font-weight: 600;
+  /* color: ; */
+}

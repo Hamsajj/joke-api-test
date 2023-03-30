@@ -5,3 +5,9 @@ export interface Joke {
   setup?: string;
   delivery?: string;
 }
+
+
+export interface JokeAnalyzes {
+  description?: string;
+  value?: string;
+}

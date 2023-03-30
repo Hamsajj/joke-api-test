@@ -1,6 +1,7 @@
 import 'reflect-metadata';
 import express from 'express';
 import morgan from 'morgan';
+import cors from 'cors';
 import { IController } from './interfaces';
 import { JokeFactory } from './jokes';
 import { errorMiddleware } from './error';
@@ -12,6 +13,7 @@ import { errorMiddleware } from './error';
  */
 export function initApp(controllers: IController[]): express.Application {
   const app = express();
+  app.use(cors());
   app.use(morgan('dev', { skip: () => process.env.NODE_ENV === 'test' }));
   for (const controller of controllers) {
     controller.setRouter(app);

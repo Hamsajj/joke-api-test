@@ -14,9 +14,9 @@
   }
 </script>
 
-<Card shadow="sm" padding="lg">
+<Card shadow="md" padding="xl">
   <Group position="apart">
-    <Text weight={500}>{title}</Text>
+    <Text size={"lg"} weight={"bold"}>{title}</Text>
     <Badge color="pink" variant="light">
       {joke.category}
     </Badge>
