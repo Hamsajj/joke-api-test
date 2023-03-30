@@ -1,8 +1,9 @@
 {
   "scripts": {
     "start": "npm run start:dev",
-    "start:dev": "cross-env NODE_ENV=development tsc -w & nodemon ./dist/app.js",
-    "start:prod": "cross-env NODE_ENV=production node dist/app.js",
+    "start:dev": "NODE_ENV=development node ./dist/app.js",
+    "start:watch": "cross-env NODE_ENV=development tsc -w & nodemon ./dist/app.js",
+    "start:prod": "cross-env NODE_ENV=production node ./dist/app.js",
     "clean": "rimraf dist",
     "build": "tsc -p .",
     "test": "cross-env NODE_ENV=test jest",
