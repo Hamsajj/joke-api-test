@@ -15,6 +15,7 @@ describe('jokes controller', () => {
         const joke = Object.assign(new Joke(), singleJokeMock);
         return Promise.resolve([joke]);
       }),
+      analyzeJokes: jest.fn(),
     };
     jokeController = new JokesController(mock);
   });

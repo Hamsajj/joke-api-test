@@ -1,6 +1,6 @@
 export const singleJokeMock = {
   id: 1,
-  joke: 'a joke',
+  joke: 'a jokea',
   lang: 'en',
   category: 'Pun',
   type: 'single',
@@ -8,9 +8,9 @@ export const singleJokeMock = {
 
 export const twoPartJokeMock = {
   id: 2,
-  setup: 'setup',
-  delivery: 'deliver',
+  setup: 'a',
+  delivery: 'jokea',
   lang: 'en',
-  category: 'Pun',
+  category: 'Programming',
   type: 'twopart',
 };
