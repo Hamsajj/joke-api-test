@@ -23,10 +23,6 @@
   {/each}
 </div> -->
 <style>
-  .analyzes-container {
-    display: flex;
-    flex-wrap: wrap;
-  }
 
   .analyze-card {
     padding: 1em 2%;

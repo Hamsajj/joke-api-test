@@ -36,7 +36,8 @@
     if (!type) {
       type = "any";
     }
-    let serverURL = import.meta.env.SERVER_URL || "http://localhost:3000";
+    console.log(import.meta.env)
+    let serverURL = import.meta.env.VITE_SERVER_URL || "http://localhost:3000";
     let queryString = new URLSearchParams({
       amount: amount.toString(),
       type,

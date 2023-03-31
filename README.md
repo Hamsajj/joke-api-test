@@ -27,14 +27,26 @@ npm run start:prod
 ## to run tests
 npm run test
 ```
+you also can run it with docker using the provided `Dockerfile` and `docker-compose.yml` files.
+
 open http://localhost:3000/jokes/list to test it.
 
 ## Frontend
-Frontend is developed with vite+svelte, used SvelteUI as UI library. I am by no means a frontend expert, so the code is not clean and good. But works :)
-###Running
+Frontend is developed with vite+svelte, used SvelteUI as UI library. source codes are in `api` folder. I am by no means a frontend expert, so the code is not clean and good. But works :)
+### Running
 you need to run backend first.
 ```bash
 cd app
 npm i
 npm run dev 
 ```
+you also can run it with docker using the provided `Dockerfile` and `docker-compose.yml` files.
+
+## Running both app and api with docker
+You can run both using `docker-compose.yml` file easily
+```bash
+docker-compose up
+```
+and then visit http://localhost:4137.
+
+**Note**: this is a preview build and not suitable for production. To make it suitable for production one needs to configure a web server like nginx to serve the frontend.

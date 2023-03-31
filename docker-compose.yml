@@ -1,0 +1,26 @@
+version: "3.7"
+services:
+  api:
+    container_name: joke-api
+    restart: on-failure
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    environment:
+      - PORT=3000
+    ports:
+      - "3000:3000"
+  client:
+    container_name: joke-client
+    restart: always
+    # nginx needs additional configuration to work with domain names in a continer
+    # for example, could not let the svelte app to use http://api:3000 as api
+    # look at this issue for potential fixes: https://github.com/docker/compose/issues/3412
+    network_mode: host
+    build:
+      context: ./app
+      args:
+        - VITE_SERVER_URL=http://localhost:3000
+      dockerfile: Dockerfile
+    depends_on:
+      - api
