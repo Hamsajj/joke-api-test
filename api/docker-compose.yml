@@ -1,0 +1,12 @@
+version: "3.7"
+services:
+  joke-api:
+    container_name: joke-api
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - PORT=3000
+    ports:
+      - 3000:3000
