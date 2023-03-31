@@ -50,3 +50,7 @@ docker-compose up
 and then visit http://localhost:4137.
 
 **Note**: this is a preview build and not suitable for production. To make it suitable for production one needs to configure a web server like nginx to serve the frontend.
+
+
+## Questionnaire
+You can find my answers [here](questionaire.md)
