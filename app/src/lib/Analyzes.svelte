@@ -7,7 +7,7 @@
   export let analyzes: JokeAnalyzes[];
 </script>
 
-<Group position="apart" spacing="xs" grow>
+<Group position="center" spacing="xs" grow>
   {#each analyzes as analyzeResult}
     <div class="analyze-card">
       <Analyze {analyzeResult} />

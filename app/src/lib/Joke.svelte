@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Badge, Button, Card, Group, Image, Text } from "@svelteuidev/core";
+  import { Badge, Card, Group, Text } from "@svelteuidev/core";
   import type { Joke } from "../models/joke.js";
   import SingleJoke from "./SingleJoke.svelte";
   import TwoPartJoke from "./TwoPartJoke.svelte";
@@ -14,7 +14,7 @@
   }
 </script>
 
-<Card shadow="md" padding="xl">
+<Card shadow="lg" padding="xl">
   <Group position="apart">
     <Text size={"lg"} weight={"bold"}>{title}</Text>
     <Badge color="pink" variant="light">

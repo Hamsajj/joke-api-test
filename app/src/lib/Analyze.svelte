@@ -1,21 +1,28 @@
 <script lang="ts">
   import type { JokeAnalyzes } from "../models/joke";
 
-  import { Badge, Button, Card, Container, Group, Image, Text } from "@svelteuidev/core";
+  import {
+    Badge,
+    Button,
+    Card,
+    Container,
+    Group,
+    Image,
+    Text,
+  } from "@svelteuidev/core";
 
-    export let analyzeResult: JokeAnalyzes;
+  export let analyzeResult: JokeAnalyzes;
 </script>
 
-  
 <div class="analyze-container">
   <div class="description">
-  <Text size="xs" weight={100}>
-    {analyzeResult.description}
-  </Text>
-</div>
-<div class="value">
-  <Text weight={"bold"}> {analyzeResult.value}</Text>
-</div>
+    <Text size="xs" weight={100}>
+      {analyzeResult.description}
+    </Text>
+  </div>
+  <div class="value">
+    <Text weight={"bold"}>{analyzeResult.value}</Text>
+  </div>
 </div>
 
 <style>
@@ -28,7 +35,7 @@
   }
 
   .description {
-    color:gray;
+    color: gray;
     padding: 1em 0;
   }
 </style>

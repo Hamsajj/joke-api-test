@@ -1,23 +1,23 @@
 <script lang="ts">
   import { Text } from "@svelteuidev/core";
   import { onMount } from "svelte";
+  import { get } from "svelte/store";
 
 
     export let text: string;
-    onMount(() => {
-        text = text.split(" ").map((word: string) => {
+    function getAttention(text: string) {
+        return text.split(" ").map((word: string) => {
             if (word.toLowerCase().includes("a")) {
                 word = `<span class="attention">${word}</span>`
             }
             return word;
         }).join(" ")
-
-    })
+    }
 </script>
 
 <div class="joke-text">
 <Text inherit>
-    {@html text}
+    {@html getAttention(text)}
 </Text>
 </div>
 
