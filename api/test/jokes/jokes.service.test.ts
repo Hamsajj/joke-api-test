@@ -23,7 +23,7 @@ describe('joke service', () => {
           expectedTotalChar: '8',
           expectedLetterCount: `'o' repeated 1 times`,
           expectedCommonLetter: `'a' with 2 occurrence`,
-          expectedDominantCategory: 'category Pun with 100% of jokes',
+          expectedDominantCategory: 'Pun with 100% of jokes',
         },
         {
           name: 'twopart joke',
@@ -31,7 +31,7 @@ describe('joke service', () => {
           expectedTotalChar: '7',
           expectedLetterCount: `'o' repeated 1 times`,
           expectedCommonLetter: `'a' with 2 occurrence`,
-          expectedDominantCategory: 'category Programming with 100% of jokes',
+          expectedDominantCategory: 'Programming with 100% of jokes',
         },
         {
           name: 'twopart and single together joke',
@@ -43,7 +43,7 @@ describe('joke service', () => {
           expectedLetterCount: `'o' repeated 2 times`,
           expectedCommonLetter: `'a' with 4 occurrence`,
           expectedDominantCategory:
-            'draw between categories Programming, Pun with 50% of jokes',
+            'draw between Programming, Pun with 50% of jokes',
         },
         {
           name: 'two of same category',
@@ -54,7 +54,7 @@ describe('joke service', () => {
           expectedTotalChar: '16',
           expectedLetterCount: `'o' repeated 2 times`,
           expectedCommonLetter: `'a' with 4 occurrence`,
-          expectedDominantCategory: 'category Pun with 100% of jokes',
+          expectedDominantCategory: 'Pun with 100% of jokes',
         },
       ];
 

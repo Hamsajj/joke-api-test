@@ -137,7 +137,7 @@ export class JokeService implements IJokeService {
     const mostCommonPercentage = (maxRepetition / categories.length) * 100;
     const analyzeResultValue = `${
       commonCategories.size > 1 ? 'draw between ' : ''
-    } ${Array.from(commonCategories).join(
+    }${Array.from(commonCategories).join(
       ', ',
     )} with ${mostCommonPercentage}% of jokes`;
     return new AnalyzeResult(
